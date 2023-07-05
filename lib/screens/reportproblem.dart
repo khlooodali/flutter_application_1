@@ -26,7 +26,7 @@ class _ReportState extends State<Report> {
 
   Future proplem() async {
     var res = await http.post(
-        Uri.parse('https://procanecer.herokuapp.com/api/v1/help/help'),
+        Uri.parse('https://backendsda.herokuapp.com/api/v1/help/help'),
         body: <String, String>{'message': _controller.text});
 
     print(res.body);

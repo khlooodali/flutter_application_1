@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/allertdialog.dart';
 import 'package:flutter_application_1/constants/pallete.dart';
+import 'package:flutter_application_1/doctors/profile.dart';
 import 'package:flutter_application_1/doctors/signupdoc.dart';
 import 'package:flutter_application_1/screens/forgetpassword.dart';
+import 'package:flutter_application_1/screens/user.dart';
 import 'package:http/http.dart' as http;
 
 class doclogin extends StatefulWidget {
@@ -24,6 +28,7 @@ class _doclogin extends State<doclogin> {
           'email': _docemail.text,
           'password': _docpass.text,
         });
+
     if (res.statusCode != 200) {
       var dialog = CustomAlertDialog(
           title: "Fail to login",
@@ -38,9 +43,14 @@ class _doclogin extends State<doclogin> {
           circularBorderRadius: 15.0);
       showDialog(context: context, builder: (BuildContext context) => dialog);
     } else {
+      var data = json.decode(res.body);
       print(res.body);
-      //Navigator.push(
-      //context, new MaterialPageRoute(builder: (context) => Profile()));       //لسه هعمل البروفايل
+      print(data[User]['name']);
+
+      /* Navigator.push(
+          context,
+          new MaterialPageRoute(
+              builder: (context) => profile()));  */ //لسه هعمل البروفايل
     }
   }
 

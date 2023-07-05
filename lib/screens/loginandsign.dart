@@ -65,7 +65,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
   Future login() async {
     var res = await http.post(
         Uri.parse(
-            'https://procanecer.herokuapp.com/api/v1/patient/patientLogin'),
+            'https://backendsda.herokuapp.com/api/v1/patient/patientLogin'),
         body: <String, String>{
           'patient_email': user.patient_email,
           'patient_password': user.patient_password,
@@ -97,7 +97,7 @@ class _LoginSignupScreenState extends State<LoginSignupScreen> {
     if (_formkey1.currentState!.validate()) {
       var res = await http.post(
           Uri.parse(
-              'https://procanecer.herokuapp.com/api/v1/patient/addPatient'),
+              'https://backendsda.herokuapp.com/api/v1/patient/addPatient'),
           body: <String, String>{
             'patient_email': user.patient_email,
             'patient_password': user.patient_password,

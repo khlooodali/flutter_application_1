@@ -15,6 +15,7 @@ class _ScanState extends State<Scan> {
   final ImagePicker _picker = ImagePicker();
   final ImageCropper _cropper = ImageCropper();
   File? pickedimage1;
+
   bool _inProcess = false;
   File? pickedimage2;
 
@@ -40,7 +41,7 @@ class _ScanState extends State<Scan> {
     this.setState(() {
       _inProcess = true;
     });
-    final XFile? image = await _picker.pickImage(source: source);
+    var image = await _picker.pickImage(source: source);
     if (image != null) {
       CroppedFile? cropped = await _cropper.cropImage(
           sourcePath: image.path,

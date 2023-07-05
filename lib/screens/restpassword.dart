@@ -1,4 +1,3 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/allertdialog.dart';
@@ -26,7 +25,7 @@ class _resetpass extends State<Resetpass> {
 
   Future Restp() async {
     var res = await http.post(
-        Uri.parse('https://procanecer.herokuapp.com/api/v1/patient/resetpass'),
+        Uri.parse('https://backendsda.herokuapp.com/api/v1/patient/resetpass'),
         body: <String, String>{
           'patient_email': _controller.text,
           'newPassword': _controller1.text,
@@ -44,7 +43,6 @@ class _resetpass extends State<Resetpass> {
                     builder: (context) => LoginSignupScreen()));
           },
           onNegativePressed: () {},
-          
           positiveBtnText: 'ok',
           negativeBtnText: "",
           bgColor: Colors.white,
@@ -56,7 +54,7 @@ class _resetpass extends State<Resetpass> {
   Future Restd() async {
     var res = await http.post(
         Uri.parse(
-            'https://procanecer.herokuapp.com/api/v1/doctor/resetpassword'),
+            'https://backendsda.herokuapp.com/api/v1/doctor/resetpassword'),
         body: <String, String>{
           'patient_email': _controller.text,
           'newPassword': _controller1.text,
@@ -68,8 +66,8 @@ class _resetpass extends State<Resetpass> {
           title: "Your password Rest Successfuly",
           message: "you can login with new password",
           onPostivePressed: () {
-            Navigator.push(
-                context, new MaterialPageRoute(builder: (context) => doclogin()));
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => doclogin()));
           },
           onNegativePressed: () {},
           positiveBtnText: 'ok',

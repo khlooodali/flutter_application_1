@@ -35,7 +35,7 @@ class _HelpState extends State<Help> {
 
   Future send() async {
     var res = await http.post(
-        Uri.parse('https://procanecer.herokuapp.com/api/v1/contact/contactus'),
+        Uri.parse('https://backendsda.herokuapp.com/api/v1/contact/contactus'),
         body: <String, String>{
           'name': _controller1.text,
           'email': _controller2.text,

@@ -11,3 +11,5 @@ class User {
   User(this.patient_email, this.disease_type, this.DOB, this.history_of_disease,
       this.patient_password, this.name, this.phone, this.status);
 }
+
+

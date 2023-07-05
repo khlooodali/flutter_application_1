@@ -302,7 +302,7 @@ class _RaysState extends State<Rays> {
   Future<RayModel?> getallRays() async {
     try {
       var response = await http.get(
-        Uri.parse('https://procanecer.herokuapp.com/api/v1/rays/getrays'),
+        Uri.parse('https://backendsda.herokuapp.com/api/v1/rays/getrays'),
         headers: {
           'Accept': 'application/json',
         },

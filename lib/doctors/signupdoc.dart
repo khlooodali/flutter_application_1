@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/constants/allertdialog.dart';
 import 'package:flutter_application_1/constants/pallete.dart';
 import 'package:flutter_application_1/doctors/doclogin.dart';
+import 'package:flutter_application_1/screens/user.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'dart:ui';
+import 'doctor.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -17,7 +19,7 @@ class Signdoc extends StatefulWidget {
 
 class _docState extends State<Signdoc> {
   bool isMale = true;
-  final _docname = TextEditingController();
+  late final _docname = TextEditingController();
   final _docusername = TextEditingController();
 
   final _docprice = TextEditingController();
@@ -36,8 +38,9 @@ class _docState extends State<Signdoc> {
   final ImagePicker _picker = ImagePicker();
   final ImageCropper _cropper = ImageCropper();
   File? pickedimage1;
+  PickedFile? _pickedFile;
   bool _inProcess = false;
-  File? pickedimage2;
+
   final icon = CupertinoIcons.moon_stars;
 
   Widget getImageWidget() {
@@ -62,7 +65,7 @@ class _docState extends State<Signdoc> {
     this.setState(() {
       _inProcess = true;
     });
-    final XFile? image = await _picker.pickImage(source: source);
+    var image = await _picker.pickImage(source: source);
     if (image != null) {
       CroppedFile? cropped = await _cropper.cropImage(
           sourcePath: image.path,
@@ -86,6 +89,7 @@ class _docState extends State<Signdoc> {
           ]);
       this.setState(() {
         pickedimage1 = File(cropped!.path);
+
         _inProcess = false;
       });
     } else {
@@ -96,37 +100,57 @@ class _docState extends State<Signdoc> {
   }
 
   Future savedoctor() async {
-    var res = await http.post(
-        Uri.parse('https://procanecer.herokuapp.com/api/v1/doctor/adddoctor'),
-        body: <String, String>{
-          'name': _docname.text,
-          'email': _docemail.text,
-          'password': _docpass.text,
-          'address': _docaddress.text,
-          'specialize': _docdep.text,
-          'about': _docabout.text,
-          'avatar': '',
-          'phone': _docphone.text
-        });
+    if (_formkey.currentState!.validate()) {
+      var res = await http.post(
+          Uri.parse('https://procanecer.herokuapp.com/api/v1/doctor/adddoctor'),
+          body: <String, String>{
+            'name': doc.name,
+            'email': doc.email,
+            'password': doc.password,
+            'address': doc.address,
+            'specialize': doc.specialize,
+            'about': doc.about,
+            'avatar': pickedimage1!.path,
+            'phone': doc.phone
+          });
 
-    print(res.body);
+      print(res.body);
 
-    var dialog = CustomAlertDialog(
-        title: "Signed UP Successfuly",
-        message: "you can Login in Our App ",
-        onPostivePressed: () {
-          Navigator.push(
-              context, new MaterialPageRoute(builder: (context) => doclogin()));
-        },
-        onNegativePressed: () {
-          Navigator.of(context).pop();
-        },
-        positiveBtnText: 'ok',
-        negativeBtnText: "Cancel",
-        bgColor: Colors.white,
-        circularBorderRadius: 15.0);
-    showDialog(context: context, builder: (BuildContext context) => dialog);
+      var dialog = CustomAlertDialog(
+          title: "Signed UP Successfuly",
+          message: "you can Login in Our App ",
+          onPostivePressed: () {
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => doclogin()));
+          },
+          onNegativePressed: () {
+            Navigator.of(context).pop();
+          },
+          positiveBtnText: 'ok',
+          negativeBtnText: "Cancel",
+          bgColor: Colors.white,
+          circularBorderRadius: 15.0);
+      showDialog(context: context, builder: (BuildContext context) => dialog);
+    } else {
+      var dialog = CustomAlertDialog(
+          title: "Fail to Register",
+          message: "TRY AGIN",
+          onPostivePressed: () {
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => Signdoc()));
+          },
+          onNegativePressed: () {
+            Navigator.of(context).pop();
+          },
+          positiveBtnText: 'ok',
+          negativeBtnText: "Cancel",
+          bgColor: Colors.white,
+          circularBorderRadius: 15.0);
+      showDialog(context: context, builder: (BuildContext context) => dialog);
+    }
   }
+
+  var doc = Doc('', '', '', '', '', '', '', '', '');
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +222,10 @@ class _docState extends State<Signdoc> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        controller: _docname,
+                        controller: TextEditingController(text: doc.name),
+                        onChanged: (value) {
+                          doc.name = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'please enter your name';
@@ -225,7 +252,10 @@ class _docState extends State<Signdoc> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        controller: _docemail,
+                        controller: TextEditingController(text: doc.email),
+                        onChanged: (value) {
+                          doc.email = value;
+                        },
                         validator: (value) {
                           if (value == null ||
                               value.isEmpty ||
@@ -255,7 +285,10 @@ class _docState extends State<Signdoc> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        controller: _docaddress,
+                        controller: TextEditingController(text: doc.address),
+                        onChanged: (value) {
+                          doc.address = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'please enter your address';
@@ -281,7 +314,10 @@ class _docState extends State<Signdoc> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        controller: _docphone,
+                        controller: TextEditingController(text: doc.phone),
+                        onChanged: (value) {
+                          doc.phone = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'please enter your phone number';
@@ -309,7 +345,10 @@ class _docState extends State<Signdoc> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        controller: _docprice,
+                        controller: TextEditingController(text: doc.price),
+                        onChanged: (value) {
+                          doc.price = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'please enter your price for detection';
@@ -335,7 +374,10 @@ class _docState extends State<Signdoc> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        controller: _docdep,
+                        controller: TextEditingController(text: doc.specialize),
+                        onChanged: (value) {
+                          doc.specialize = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'please enter your specialization';
@@ -356,7 +398,10 @@ class _docState extends State<Signdoc> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
-                        controller: _docpass,
+                        controller: TextEditingController(text: doc.password),
+                        onChanged: (value) {
+                          doc.password = value;
+                        },
                         validator: (value) {
                           if (value == null ||
                               value.isEmpty ||
@@ -387,11 +432,6 @@ class _docState extends State<Signdoc> {
                                     ? Icons.visibility
                                     : Icons.visibility_off))),
                         keyboardType: TextInputType.visiblePassword,
-                        onChanged: (value) {
-                          setState(() {
-                            _docpass.text = value.trim();
-                          });
-                        },
                         obscureText: visablepassword,
                       ),
                     ),
@@ -399,7 +439,10 @@ class _docState extends State<Signdoc> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
                         maxLines: 5,
-                        controller: _docabout,
+                        controller: TextEditingController(text: doc.about),
+                        onChanged: (value) {
+                          doc.about = value;
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'This value is needed';
@@ -522,7 +565,16 @@ class _docState extends State<Signdoc> {
             ),
             onPressed: () {
               savedoctor();
-              _formkey.currentState!.validate();
+
+              /*  _docabout.clear();
+              _docdep.clear();
+              _docemail.clear();
+              _docname.clear();
+              _docpass.clear();
+              _docphone.clear();
+              _docaddress.clear();
+              _docphone.clear(); */
+              //_formkey.currentState!.validate();
               /*  Navigator.push(
                   context,
                   MaterialPageRoute(

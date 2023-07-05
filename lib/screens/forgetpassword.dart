@@ -25,7 +25,7 @@ class _reset extends State<Reset> {
 
   Future Forgetp() async {
     var res = await http.post(
-        Uri.parse('https://procanecer.herokuapp.com/api/v1/patient/forgetpass'),
+        Uri.parse('https://backendsda.herokuapp.com/api/v1/patient/forgetpass'),
         body: <String, String>{
           'patient_email': _controller.text,
         });
@@ -52,7 +52,7 @@ class _reset extends State<Reset> {
   Future Forgetd() async {
     var res = await http.post(
         Uri.parse(
-            'https://procanecer.herokuapp.com/api/v1/doctor/forgetPassword'),
+            'https://backendsda.herokuapp.com/api/v1/doctor/forgetPassword'),
         body: <String, String>{
           'email': _controller.text,
         });

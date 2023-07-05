@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 class FetchXrayList {
   var data = [];
   List<RayModel> results = [];
-  String urlList = 'https://procanecer.herokuapp.com/api/v1/rays/get_one_ray/';
+  //String urlList = 'https://procanecer.herokuapp.com/api/v1/rays/get_one_ray/';
 
   /*Future<List<Userlist>> getxrayList({String? query}) async {
     var url = Uri.parse(urlList);
@@ -36,7 +36,7 @@ class FetchXrayList {
     try {
       var response = await http.get(
         Uri.parse(
-            'https://procanecer.herokuapp.com/api/v1/rays/get_one_ray/$query'),
+            'https://backendsda.herokuapp.com/api/v1/rays/get_one_ray/${query}'),
         headers: {
           'Accept': 'application/json',
         },
@@ -55,7 +55,6 @@ class FetchXrayList {
         //     fontSize: 16.0);
         return data;
       } else {
-        print("error");
         print(responseMap["msg"]);
         // Fluttertoast.showToast(
         //     msg: responseMap["msg"],

@@ -141,7 +141,7 @@ class _HomePageState extends State<HomePageScreen> {
   Future<DoctorModel?> getalldoc() async {
     try {
       var response = await http.get(
-        Uri.parse('https://procanecer.herokuapp.com/api/v1/doctor/alldoctor'),
+        Uri.parse('https://backendsda.herokuapp.com/api/v1/doctor/alldoctor'),
         headers: {
           'Accept': 'application/json',
         },
